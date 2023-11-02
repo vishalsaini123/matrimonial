@@ -20,6 +20,7 @@ class LoginView extends GetView<AuthController> {
 
   //SearchController airportsController = Get.find<SearchController>();
   TextEditingController textEditingController =  TextEditingController();
+  TextEditingController emailController =  TextEditingController();
 
 
 
@@ -27,6 +28,7 @@ class LoginView extends GetView<AuthController> {
   Widget build(BuildContext context) {
     return  Obx(() {
       return Scaffold(
+        resizeToAvoidBottomInset: false,
           appBar: AppBar(title: const Center(child: Text('Matrimonial.ai',style: TextStyle(color: Color(0xff7F4458),fontFamily: 'margarine' ,fontSize: 23,fontWeight: FontWeight.w500),)),),
           body: Container(
             margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 10),
@@ -37,7 +39,7 @@ class LoginView extends GetView<AuthController> {
                   padding: EdgeInsets.all(8.0),
                   child: Text('Sign In',style: TextStyle(color: Colors.black,fontFamily: 'outfit' ,fontSize: 20,fontWeight: FontWeight.w600),),
                 ),
-                const AppTextFormField(hintText: 'Email or mobile number',showLabel: false,),
+                 AppTextFormField(hintText: 'Email or mobile number',showLabel: false,controller: emailController,),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
@@ -90,7 +92,9 @@ class LoginView extends GetView<AuthController> {
                 ],),
                 const SizedBox(height: 20,),
                 PrimaryButton(text: "Sign In",onPressed: (){
-                  Get.offAllNamed(Routes.HOME);
+                //  Get.offAllNamed(Routes.HOME);
+                  controller.signInQbUser(emailController.text, textEditingController.text);
+
                 },),
                 const Center(
                   child: Padding(

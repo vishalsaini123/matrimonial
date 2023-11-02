@@ -41,7 +41,6 @@ abstract class _Paths {
   static const SEARCH = '/search';
   static const AUTH = '/auth';
   static const SIGNUPVERIFY = '/signupverify';
-  static const DETAILS = '/details';
   static const hotelList = '/hotelList';
   static const hotelDetail = '/hotelDetail';
   static const hotelRoomDetail = '/hotelRoomDetail';

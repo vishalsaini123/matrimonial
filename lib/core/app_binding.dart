@@ -1,5 +1,6 @@
 
 import 'package:get/get.dart';
+import 'package:matrimonial_ai/Home/controllers/home_controller.dart';
 
 import '../service/http_hotelservice_impl.dart';
 import '../service/http_service_impl.dart';
@@ -10,6 +11,6 @@ class AppBinding extends Bindings {
     Get.put(HttpServiceImpl());
     Get.put(HttpHotelServiceImpl());
 
-    //Get.put(AirportsController());
+
   }
 }

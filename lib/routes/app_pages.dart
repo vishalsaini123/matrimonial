@@ -1,5 +1,6 @@
 
 import 'package:get/get.dart';
+import 'package:matrimonial_ai/Home/bindings/chat_binding.dart';
 import 'package:matrimonial_ai/Home/bindings/home_binding.dart';
 import 'package:matrimonial_ai/Home/views/ChatMessageView.dart';
 import 'package:matrimonial_ai/Home/views/HomeView.dart';
@@ -92,7 +93,7 @@ class AppPages {
     ),GetPage(
       name: _Paths.CHATMEESSAGES,
       page: () =>  ChatMessageView(),
-      binding: HomeBinding(),
+      binding: ChatBinding(),
     ),
    /* GetPage(
       name: _Paths.hotelList,

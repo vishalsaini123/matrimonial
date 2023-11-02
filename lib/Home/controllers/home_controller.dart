@@ -1,5 +1,8 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:matrimonial_ai/Home/views/match.dart';
 import 'package:swipe_cards/draggable_card.dart';
@@ -39,6 +42,8 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
+
+
     for (int i = 0; i < _names.length; i++) {
       swipeItems?.add(SwipeItem(
           content: Content(text: _names[i], color: _colors[i]),
@@ -72,16 +77,16 @@ class HomeController extends GetxController {
     matchEngine = MatchEngine(swipeItems: swipeItems);
     super.onInit();
 
+    debugPrint("on init called ");
+
 
   }
 
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
 
+@override
+  void onClose() {
+    super.onClose();
   }
-
 
 
 
