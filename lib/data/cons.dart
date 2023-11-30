@@ -8,6 +8,7 @@ class Cons {
   static const String host = "bcardon";
   static const String marker = "372857";
   static const String token = "3e7648ea9c0dbe7ce5b52d91ebc05dbc";
+  static const String imageBaseUrl = "https://enigmamotions.com/uploads/";
 
   static DateFormat sqlFormat = DateFormat('yyyy-MM-dd');
   static DateFormat readableFormat = DateFormat('EEEE, dd MMM yyyy');

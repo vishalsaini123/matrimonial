@@ -15,9 +15,6 @@ class AuthView extends GetView<AuthController> {
   //SearchController airportsController = Get.find<SearchController>();
   final TextEditingController textEditingController =  TextEditingController();
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return  SafeArea(
@@ -41,7 +38,7 @@ class AuthView extends GetView<AuthController> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 12),
                 width: double.infinity,
-                child: OutlinedAppButton(text: "Authorize",onPressed: ()=> controller.authorize() ,),
+                child: OutlinedAppButton(text: "Authorize",onPressed: ()=> {} ),
               ),
 
               const SizedBox(

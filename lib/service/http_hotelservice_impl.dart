@@ -34,9 +34,9 @@ class HttpHotelServiceImpl implements HttpService {
   Future<void> init() async {
     _dio = Dio(BaseOptions(
       baseUrl: baseURL,
-      connectTimeout: 100000,
+      connectTimeout: const Duration(minutes: 5),
       //5s
-      receiveTimeout: 100000,
+      receiveTimeout: const Duration(minutes: 5),
       contentType: "application/json",
       responseType: ResponseType.json,
     ));
@@ -75,6 +75,21 @@ class HttpHotelServiceImpl implements HttpService {
       response = await _dio.get(url);
     } on Exception catch (e) {
       print(e.toString());
+    }
+    return response;
+  }
+
+  @override
+  Future<Response?> postRequestWithFormData(String url, {FormData? data}) async{
+    Response? response;
+    try {
+      response = await (null != data
+          ? _dio.post(url, data: jsonEncode(data))
+          : _dio.post(url));
+    } on Exception catch (e) {
+
+      throw Exception(e);
+
     }
     return response;
   }

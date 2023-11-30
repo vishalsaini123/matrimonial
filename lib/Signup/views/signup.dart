@@ -25,58 +25,67 @@ class SignUpView extends GetView<SignUpController> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        appBar: AppBar(title: const Center(child: Text('Matrimonial.ai',style: TextStyle(color: Color(0xff7F4458),fontFamily: 'margarine' ,fontSize: 23,fontWeight: FontWeight.w500),)),),
-        body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 10),
-          child:  Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text('Register',style: TextStyle(color: Colors.black,fontFamily: 'outfit' ,fontSize: 20,fontWeight: FontWeight.w600),),
-              ),
-              const AppTextFormField(hintText: 'Email or mobile number',showLabel: false,),
 
-
-              const SizedBox(height: 20,),
-              PrimaryButton(text: "Register",onPressed: (){
-
-                Get.toNamed(Routes.signupVerify);
-
-              },),
-              const Center(
-                child: Padding(
-                    padding: EdgeInsets.only(top: 20,bottom: 20),
-                    child: Text('OR',style: TextStyle(color: Color(0xff505050),fontFamily: 'outfit' ,fontSize: 17,fontWeight: FontWeight.w500),)
+    return  Obx(() {
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+          appBar: AppBar(title: const Center(child: Text('Matrimonial.ai',style: TextStyle(color: Color(0xff7F4458),fontFamily: 'margarine' ,fontSize: 23,fontWeight: FontWeight.w500),)),),
+          body: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 10),
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('Register',style: TextStyle(color: Colors.black,fontFamily: 'outfit' ,fontSize: 20,fontWeight: FontWeight.w600),),
                 ),
-              ),
-              OutlinedAppLoginButton(text: 'Continue with Face',onPressed: (){},),
+                AppTextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: textEditingController,hintText: 'Email or mobile number',showLabel: false,),
 
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 30),
-                child: Center(
-                  child: RichText(
-                      text:
-                      TextSpan(
-                          recognizer: TapGestureRecognizer()..onTap =(){},
-                          children:  [
-                            const TextSpan(text: 'Already have an account? ',style: TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'outfit')),
-                            TextSpan(
-                                recognizer: TapGestureRecognizer()..onTap =(){
-                                  Get.toNamed(Routes.LOGIN);
-                                },
-                                text: 'Sign in',style: TextStyle(color: Color(0xff106EDC),fontSize: 18,fontFamily: 'outfit'))
-                          ])),
+
+                const SizedBox(height: 20,),
+                PrimaryButton(text: "Register +${controller.name.value}",onPressed: (){
+
+
+                  controller.signUp(textEditingController.text);
+
+
+                },),
+                const Center(
+                  child: Padding(
+                      padding: EdgeInsets.only(top: 20,bottom: 20),
+                      child: Text('OR',style: TextStyle(color: Color(0xff505050),fontFamily: 'outfit' ,fontSize: 17,fontWeight: FontWeight.w500),)
+                  ),
                 ),
-              )
+                OutlinedAppLoginButton(text: 'Continue with Face',onPressed: (){},),
+               // Align(alignment: FractionalOffset.center,child: controller.loader(),),
 
-            ],
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: Center(
+                    child: RichText(
+                        text:
+                        TextSpan(
+                            recognizer: TapGestureRecognizer()..onTap =(){},
+                            children:  [
+                              const TextSpan(text: 'Already have an account? ',style: TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'outfit')),
+                              TextSpan(
+                                  recognizer: TapGestureRecognizer()..onTap =(){
+                                    Get.toNamed(Routes.LOGIN);
+                                  },
+                                  text: 'Sign in',style: TextStyle(color: Color(0xff106EDC),fontSize: 18,fontFamily: 'outfit'))
+                            ])),
+                  ),
+                )
 
-          ),
-        )
-    );
+              ],
+
+            ),
+          )
+      );
+    });
   }
 
 }

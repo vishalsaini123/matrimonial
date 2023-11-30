@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:matrimonial_ai/widgets/app_text_form_field.dart';
 
 import '../data/colors.dart';
-
+typedef MyCallback = void Function(String gen);
 class AppRadioButtonsFormField extends StatefulWidget {
+
+  final MyCallback? callback;
   const AppRadioButtonsFormField({
     Key? key,
-    required this.text
+    required this.text,
+    this.callback
   }) : super(key: key);
 
   final String? text;
@@ -16,67 +19,79 @@ class AppRadioButtonsFormField extends StatefulWidget {
 
 class _RadioButtons extends State<AppRadioButtonsFormField>
 {
-  String? gender;
+  Color getColor(Set<MaterialState> states) {
+    return const Color(0xFF344054);
+  }
+  String? gender = "male";
+  String? othergender;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Theme(
-          data: Theme.of(context).copyWith(
-              unselectedWidgetColor: AppColors.primary,
-              disabledColor: Colors.blue
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20,),
+           Text(widget.text!,style: const TextStyle(color: Colors.black,fontFamily: 'outfit' ,fontSize: 20,fontWeight: FontWeight.w600),),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            decoration: BoxDecoration(border: Border.all(width: 1.5,color: Colors.black12),borderRadius: const BorderRadius.all(Radius.circular(10))),
+            child: RadioListTile(
+              fillColor: MaterialStateProperty.resolveWith(getColor),
+              title:  const Text("Male",style: TextStyle(fontSize: 16,color: Color(0xFF344054),fontFamily: 'inter',fontWeight: FontWeight.w500,),),
+              value: "male",
+                activeColor: AppColors.primary,
+              groupValue: gender,
+              onChanged: (value){
+                setState(() {
+                  gender = value.toString();
+                  widget.callback!(gender!);
+                  
+                });
+              },
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20,),
-             Text(widget.text!,style: const TextStyle(color: Colors.black,fontFamily: 'outfit' ,fontSize: 20,fontWeight: FontWeight.w600),),
-            Container(
-              margin: const EdgeInsets.only(top: 20),
-              decoration: BoxDecoration(border: Border.all(width: 1.5,color: Colors.black12),borderRadius: const BorderRadius.all(Radius.circular(10))),
-              child: RadioListTile(
-                title: Text("Male"),
-                value: "male",
-                  activeColor: AppColors.primary,
-                groupValue: gender,
-                onChanged: (value){
-                  setState(() {
-                    gender = value.toString();
-                  });
-                },
-              ),
+
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 20),
+            decoration: BoxDecoration(border: Border.all(width: 1.5,color: Colors.black12),borderRadius: const BorderRadius.all(Radius.circular(10))),
+            child: RadioListTile(
+              fillColor: MaterialStateProperty.resolveWith(getColor),
+              title: const Text("Female",style: TextStyle(fontSize: 16,color: Color(0xFF344054),fontFamily: 'inter',fontWeight: FontWeight.w500,),),
+              value: "female",
+              activeColor: AppColors.primary,
+              groupValue: gender,
+              onChanged: (value){
+                setState(() {
+                  gender = value.toString();
+                  widget.callback!(gender!);
+                });
+              },
             ),
+          ),
 
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20),
-              decoration: BoxDecoration(border: Border.all(width: 1.5,color: Colors.black12),borderRadius: const BorderRadius.all(Radius.circular(10))),
-              child: RadioListTile(
-                title: Text("Female"),
-                value: "female",
-                groupValue: gender,
-                onChanged: (value){
-                  setState(() {
-                    gender = value.toString();
-                  });
-                },
-              ),
-            ),
+          Container(
+            decoration: BoxDecoration(border: Border.all(width: 1.5,color: Colors.black12),borderRadius: const BorderRadius.all(Radius.circular(10))),
+            child: RadioListTile(
+              fillColor: MaterialStateProperty.resolveWith(getColor),
+              title: const Text("Non-binary",style: TextStyle(fontSize: 16,color: Color(0xFF344054),fontFamily: 'inter',fontWeight: FontWeight.w500,),),
+              value: "other",
+              groupValue: gender,
+              activeColor: AppColors.primary,
+              onChanged: (value){
+                setState(() {
+                  gender = value.toString();
+                  widget.callback!(gender!);
 
-            Container(
-              decoration: BoxDecoration(border: Border.all(width: 1.5,color: Colors.black12),borderRadius: const BorderRadius.all(Radius.circular(10))),
-              child: RadioListTile(
-                title: Text("Non-binary"),
-                value: "other",
-                groupValue: gender,
-                onChanged: (value){
-                  setState(() {
-                    gender = value.toString();
-
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-                        context: context, builder: (BuildContext context){
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+                      context: context,
+                      builder: (BuildContext context){
+                    return StatefulBuilder(builder: (BuildContext context,  setState){
                       return SingleChildScrollView(
                         child: Padding(
                           padding:  EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -91,68 +106,78 @@ class _RadioButtons extends State<AppRadioButtonsFormField>
                               ),
                               RadioListTile(
                                 dense: true,
+                                fillColor: MaterialStateProperty.resolveWith(getColor),
+                                title:  Text("Intersex man",style: radioTextStyle()),
+                                toggleable: true,
+                                value: "Intersex man",
+                                controlAffinity: ListTileControlAffinity.trailing,
+                                activeColor: AppColors.primary,
+                                groupValue: gender,
+                                onChanged: (value){
+                                  setState(() {
+                                    gender = value.toString();
+                  widget.callback!(gender!);;
+                                  });
+                                },
+                              ),
+                              RadioListTile(
+                                fillColor: MaterialStateProperty.resolveWith(getColor),
+                                title:  Text("Trans man",style: radioTextStyle()),
+                                toggleable: true,
+                                value: "Trans man",
+                                controlAffinity: ListTileControlAffinity.trailing,
+                                activeColor: AppColors.primary,
+                                groupValue: gender,
+                                onChanged: (value){
+                                  setState(() {
+                                    gender = value.toString();
+                           widget.callback!(gender!);
+                                  });
+                                },
+                              ),
+                              RadioListTile(
+                                fillColor: MaterialStateProperty.resolveWith(getColor),
+                                title:  Text("Transmasculine",style: radioTextStyle()),
+                                toggleable: true,
+                                value: "Transmasculine",
+                                controlAffinity: ListTileControlAffinity.trailing,
+                                activeColor: AppColors.primary,
 
-                                title: const Text("Intersex man",style: TextStyle(fontFamily: 'inter'),),
-                                toggleable: true,
-                                value: "male",
-                                controlAffinity: ListTileControlAffinity.trailing,
-                                activeColor: AppColors.primary,
                                 groupValue: gender,
                                 onChanged: (value){
                                   setState(() {
                                     gender = value.toString();
+                  widget.callback!(gender!);;
                                   });
                                 },
                               ),
                               RadioListTile(
-                                title: const Text("Trans man",style: TextStyle(fontFamily: 'inter'),),
+                                fillColor: MaterialStateProperty.resolveWith(getColor),
+                                title:  Text("Man and Nonbinary",style:  radioTextStyle()),
                                 toggleable: true,
-                                value: "male",
+                                value: "Man and Nonbinary",
                                 controlAffinity: ListTileControlAffinity.trailing,
                                 activeColor: AppColors.primary,
                                 groupValue: gender,
                                 onChanged: (value){
                                   setState(() {
                                     gender = value.toString();
+                  widget.callback!(gender!);;
                                   });
                                 },
                               ),
                               RadioListTile(
-                                title: const Text("Transmasculine",style: TextStyle(fontFamily: 'inter'),),
+                                fillColor: MaterialStateProperty.resolveWith(getColor),
+                                title:  Text("Cis Man",style:  radioTextStyle()),
                                 toggleable: true,
-                                value: "male",
+                                value: "Cis Man",
                                 controlAffinity: ListTileControlAffinity.trailing,
                                 activeColor: AppColors.primary,
                                 groupValue: gender,
                                 onChanged: (value){
                                   setState(() {
                                     gender = value.toString();
-                                  });
-                                },
-                              ),
-                              RadioListTile(
-                                title: const Text("Man and Nonbinary",style: TextStyle(fontFamily: 'inter'),),
-                                toggleable: true,
-                                value: "male",
-                                controlAffinity: ListTileControlAffinity.trailing,
-                                activeColor: AppColors.primary,
-                                groupValue: gender,
-                                onChanged: (value){
-                                  setState(() {
-                                    gender = value.toString();
-                                  });
-                                },
-                              ),
-                              RadioListTile(
-                                title: const Text("Cis Man",style: TextStyle(fontFamily: 'inter'),),
-                                toggleable: true,
-                                value: "male",
-                                controlAffinity: ListTileControlAffinity.trailing,
-                                activeColor: AppColors.primary,
-                                groupValue: gender,
-                                onChanged: (value){
-                                  setState(() {
-                                    gender = value.toString();
+                                    widget.callback!(gender!);
                                   });
                                 },
                               ),
@@ -161,24 +186,27 @@ class _RadioButtons extends State<AppRadioButtonsFormField>
                                 child: Text('Want to describe more?',style: TextStyle(color: Colors.black,fontFamily: 'inter' ),),
                               ),
 
-                             const Padding(
-                               padding: EdgeInsets.symmetric(horizontal: 10),
-                               child: AppTextFormField(labelText: 'Write here...',),
-                             )
-
+                               Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: AppTextFormField(labelText: 'Write here...',onChanged: (value){gender = value;}),
+                              )
                             ],
                           ),
                         ),
                       );
                     });
                   });
-                },
-              ),
-            )
-          ],),
-        ),
+                });
+              },
+            ),
+          )
+        ],),
       ),
     );
+  }
+
+  TextStyle radioTextStyle(){
+    return const TextStyle(fontSize: 16,color: Color(0xFF344054),fontFamily: 'inter',fontWeight: FontWeight.w500,);
   }
 
 }

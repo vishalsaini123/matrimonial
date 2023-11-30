@@ -157,7 +157,7 @@ class ChatMessageView extends GetView<ChatController> {
               mainAxisAlignment:MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-             const Text(qbMessage.!,style: TextStyle(fontFamily: 'mulish',fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),),
+              const Text("Silva test",textAlign: TextAlign.left,style: TextStyle(fontFamily: 'mulish',fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),),
              Container(
                margin: const EdgeInsets.only(top: 10,bottom: 10),
                padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),

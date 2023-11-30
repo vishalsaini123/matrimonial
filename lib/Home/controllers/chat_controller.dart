@@ -208,6 +208,7 @@ class ChatController extends GetxController {
       if(createdDialog != null) {
          _dialogId = createdDialog.id!;
 
+
        // await QB.chat.joinDialog(_dialogId);
          debugPrint("innf"+createdDialog!.name!);
 

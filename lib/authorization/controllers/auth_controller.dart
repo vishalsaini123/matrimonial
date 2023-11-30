@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:matrimonial_ai/model/Login.dart';
 import 'package:matrimonial_ai/utils/SharePref.dart';
 import 'package:quickblox_sdk/auth/module.dart';
 import 'package:quickblox_sdk/chat/constants.dart';
@@ -27,6 +28,7 @@ class AuthController extends GetxController {
   RxString url =  "".obs;
   RxBool showPassowrd =  true.obs;
   Rx<GetEnvironmentModel> environmentVariables = GetEnvironmentModel().obs;
+  Rx<Login> loginData = Login().obs;
   RxDouble pageprogress = 0.0.obs;
 
   double test = 0.0;
@@ -34,7 +36,14 @@ class AuthController extends GetxController {
   var hasSearchData = false.obs;
   var isEnvLoading = false.obs;
 
-
+  Widget loader() {
+    return isDataLoading.value? Container(
+      color: Colors.grey[200],
+      width: 90.0,
+      height: 90.0,
+      child:  const Padding(padding: EdgeInsets.all(5.0),child: Center(child: CircularProgressIndicator())),
+    ): Container();
+  }
 
   @override
   void onInit() {
@@ -49,41 +58,54 @@ class AuthController extends GetxController {
     super.onReady();
 
   }
-  void authorize() async {
+  void authorize(String mobile,String password) async {
+    if(mobile.isEmpty){
+      showMsg("Please enter email address or mobile number");
+      return;
+    }
+    else if(password.isEmpty){
+      showMsg("Please enter password");
+      return;
+    }
+    else if(password.length<8){
+      showMsg("Password length should be greater than or equal to 8");
+      return;
+    }
+    else{
 
-    print(environmentVariables.value.codeChallenge);
-    try{
-      isDataLoading(true);
-      hasSearchData(true);
-      dio.Response? response =
-      await _httpService.postRequest("authorize",data: {
-        "clientId" : "STG2-MYINFO-SELF-TEST",
-        "scope" : environmentVariables.value.scope,
-        "purpose_id" : "demonstration",
-        "redirectUrl" : "http://localhost:3001/callback",
-        "authApiUrl" : "https://test.api.myinfo.gov.sg/com/v4/authorize",
-        "code_challenge" : environmentVariables.value.codeChallenge
-      }
-      );
-      if (null != response) {
-        print(response.data);
-        isDataLoading(false);
-        if (response.statusCode == 200) {
-          hasSearchData(true);
+      try{
+        isDataLoading(true);
+        hasSearchData(true);
+        dio.Response? response =
+        await _httpService.postRequest("login",data: {
+          "mobile" : mobile,
+          "password" :password,
 
-          url.value = response.data.toString();
-          url.refresh();
         }
+        );
+        if (null != response) {
+          print(response.data);
+          isDataLoading(false);
+          if (response.statusCode == 200) {
+            hasSearchData(true);
+            signInQbUser(mobile, password);
+            loginData.value = Login.fromJson(response.data);
+          }
+        }
+
+
       }
+      catch(ex){
+
+        isDataLoading(false);
+        hasSearchData(true);
+
+        print(ex.toString());
+
+      }
+
     }
-    catch(ex){
 
-      isDataLoading(false);
-      hasSearchData(true);
-
-      print(ex.toString());
-
-    }
 
 
 
@@ -137,7 +159,7 @@ class AuthController extends GetxController {
   void signInQbUser(String email, String password) async{
 
     if(email.isEmpty){
-      showMsg("Please enter email address");
+      showMsg("Please enter email address or mobile number");
       return;
     }
     else if(password.isEmpty){
@@ -149,19 +171,24 @@ class AuthController extends GetxController {
       return;
     }
     else{
+
       try {
+        isDataLoading(true);
         QBLoginResult result = await QB.auth.login(email, password);
         QBUser? qbUser = result.qbUser;
         QBSession? qbSession = result.qbSession;
-       connect(qbUser!.id!, password);
-
+        connect(qbUser!.id!, password);
+        isDataLoading(false);
         debugPrint(qbUser?.login);
         SharedPref().setQbId(qbUser!.id!);
         Get.offAllNamed(Routes.HOME);
       } on PlatformException catch (e) {
+        isDataLoading(false);
         // some error occurred, look at the exception message for more details
       }
     }
+
+
 
 
   }
@@ -186,6 +213,9 @@ class AuthController extends GetxController {
     }
   }
 
+
+
+
   showMsg(String msg){
     Fluttertoast.showToast(
         msg: msg,
@@ -197,5 +227,7 @@ class AuthController extends GetxController {
         fontSize: 16.0
     );
   }
+
+
 
 }

@@ -8,7 +8,7 @@ import 'package:get/get.dart' as get_x;
 import 'http_service.dart';
 
 
-const baseURL = "http://13.215.153.108/";
+const baseURL = "https://enigmamotions.com/api/";
 
 class HttpServiceImpl implements HttpService {
   late Dio _dio;
@@ -34,10 +34,10 @@ class HttpServiceImpl implements HttpService {
   Future<void> init() async {
     _dio = Dio(BaseOptions(
       baseUrl: baseURL,
-      connectTimeout: 200000,
-      sendTimeout: 200000,
+      connectTimeout:  const Duration(minutes: 5),
+      sendTimeout:  const Duration(minutes: 5),
       //5s
-      receiveTimeout: 200000,
+      receiveTimeout:  const Duration(minutes: 5),
       contentType: "application/json",
       responseType: ResponseType.json,
     ));
@@ -103,6 +103,21 @@ class HttpServiceImpl implements HttpService {
   }
 
   @override
+  Future<Response?> postRequestWithFormData(String url, {FormData? data}) async{
+    Response? response;
+    try {
+      response = await (null != data
+          ? _dio.post(url, data: data)
+          : _dio.post(url));
+    } on Exception catch (e) {
+
+      throw Exception(e);
+
+    }
+    return response;
+  }
+
+  @override
   Future<Response?> deleteRequest(String url) async {
     Response? response;
     try {
@@ -124,4 +139,6 @@ class HttpServiceImpl implements HttpService {
     }
     return response;
   }
+
+
 }

@@ -47,11 +47,13 @@ class LoginView extends GetView<AuthController> {
                     controller: textEditingController,
                     obscureText: controller!.showPassowrd.value,
                     maxLines: 1,
+                      style:const TextStyle(color: Color(0xFF667085),fontSize: 16,fontWeight: FontWeight.w400,fontFamily: 'outfit') ,
                     autofocus: false,
                     enabled: true,
                     decoration: InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                         isDense: true,
+
                         suffixIcon: IconButton(icon:controller!.showPassowrd.value?Image.asset("assets/images/passwordoff.png"):Image.asset("assets/images/password.png"), onPressed:()=>controller.showPassowrd.value=!controller.showPassowrd.value,),
                         hintStyle: const TextStyle(color: Color(0xFF667085),fontSize: 16,fontWeight: FontWeight.w400,fontFamily: 'outfit'),
                         hintText: "Password",
@@ -93,6 +95,7 @@ class LoginView extends GetView<AuthController> {
                 const SizedBox(height: 20,),
                 PrimaryButton(text: "Sign In",onPressed: (){
                 //  Get.offAllNamed(Routes.HOME);
+                  FocusManager.instance.primaryFocus?.unfocus();
                   controller.signInQbUser(emailController.text, textEditingController.text);
 
                 },),
@@ -106,6 +109,7 @@ class LoginView extends GetView<AuthController> {
                   
 
                 },),
+                Align(alignment: FractionalOffset.center,child: controller.loader(),),
 
                 const Spacer(),
                 Padding(

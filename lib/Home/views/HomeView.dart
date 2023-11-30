@@ -186,7 +186,7 @@ class HomeView extends GetView<HomeController> {
                 Container(
 
 
-                  child: SwipeCards(
+                  child: Obx(() =>!controller.hasSearchData.value?  Center(child: Text("Please wait..",style: TextStyle(color: AppColors.primary),)): controller.isDataLoading.value?Container():SwipeCards(
                     matchEngine: controller.matchEngine!,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
@@ -204,16 +204,18 @@ class HomeView extends GetView<HomeController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
 
-                              const Padding(
-                                padding: EdgeInsets.all(20.0),
+                               Padding(
+                                padding: const EdgeInsets.all(20.0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Jessica Parker, 23',style: TextStyle(color: Colors.white,fontFamily: 'sk' ,fontSize: 18,fontWeight: FontWeight.w700)),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 5),
-                                      child: Text('Professional model',style: TextStyle(color: Colors.white,fontFamily: 'sk' ,fontSize: 15,fontWeight: FontWeight.w400)),
+                                    Text(controller.homeListing.value.data![index].name??"NA",style: TextStyle(color: Colors.white,fontFamily: 'sk' ,fontSize: 18,fontWeight: FontWeight.w700)),
+                                     Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: SizedBox(
+                                        width: 220,
+                                          child: Text(controller.homeListing.value.data![index].about??"NA",style: TextStyle(color: Colors.white,fontFamily: 'sk' ,fontSize: 15,fontWeight: FontWeight.w400))),
                                     ),
                                   ],
                                 ),
@@ -289,7 +291,7 @@ class HomeView extends GetView<HomeController> {
                       padding: const EdgeInsets.all(3.0),
                       child: Text('Super Like'),
                     ),
-                  ),
+                  )),
                 ),
 
 

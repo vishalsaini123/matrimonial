@@ -78,17 +78,8 @@ class _WebRTCScreenState extends State<VideoCall> {
                   _buildButton('enable audio', () => _enableAudio(true)),
                   _buildButton('switch camera', () => _switchCamera()),
                   _buildButton('mirror camera', () => _mirrorCamera()),
-                  _buildButton('switch audio to LOUDSPEAKER', () => _switchAudioOutput(QBRTCAudioOutputTypes.LOUDSPEAKER)),
-                  _buildButton('switch audio to EARSPEAKER', () => _switchAudioOutput(QBRTCAudioOutputTypes.EARSPEAKER)),
-                  _buildButton('switch audio to BLUETOOTH', () => _switchAudioOutputToBluetooth()),
-                  _buildButton('subscribe events', () => _subscribeEvents()),
-                  _buildButton('unsubscribe events', () => _unsubscribeEvents()),
-                  _buildButton('set RTCConfigs', () => _setRTCConfigs()),
-                  _buildButton('get RTCConfigs', () => _getRTCConfigs()),
-                  _buildButton('set Ice Servers', () => _setIceServers()),
-                  _buildButton('get Ice Servers', () => _getIceServers()),
-                  _buildButton('set reconnection time interval', () => _setReconnectionTimeInterval()),
-                  _buildButton('get reconnection time interval', () => _getReconnectionTimeInterval()),
+
+
                   Container(margin: EdgeInsets.all(20.0), height: 1, width: double.maxFinite, color: Colors.grey),
                   Visibility(
                       visible: _isVideoCall,

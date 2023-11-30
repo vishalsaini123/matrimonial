@@ -6,7 +6,9 @@ import 'package:matrimonial_ai/authorization/views/login.dart';
 import 'package:matrimonial_ai/widgets/outline_button.dart';
 import 'package:matrimonial_ai/widgets/primary_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:get/get.dart';
 
+import '../routes/app_pages.dart';
 class SliderScreens extends StatefulWidget {
 
   const SliderScreens({
@@ -121,10 +123,9 @@ class _SliderScreenState extends State<SliderScreens> {
               margin: const EdgeInsets.only(left: 25,right: 25,top: 20),
               child: PrimaryButton(
                 text: 'Join Matrimonial',onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) =>  SignUpView()),
-                );
+
+                Get.toNamed(Routes.REGISTER);
+
               },)),
           Container(
               margin: const EdgeInsets.only(left: 25,right: 25,top: 10,bottom: 20),

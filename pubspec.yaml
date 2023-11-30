@@ -33,7 +33,8 @@ dependencies:
   flutter_otp_text_field: ^1.1.1
   page_view_indicator_ns: ^1.0.0+1
   percent_indicator: ^4.2.3
-  dio: 4.0.6
+  dio: ^5.3.4
+  http_parser: ^4.0.2
   flutter_calendar_carousel: 2.4.0
   intl: ^0.17.0
   crypto: ^3.0.2
@@ -46,6 +47,9 @@ dependencies:
   fluttertoast: ^8.2.2
   shared_preferences: ^2.2.2
   file_picker: ^5.2.3
+  image_picker: ^1.0.4
+  timer_count_down: ^2.2.2
+  visibility_detector: ^0.3.3
   permission_handler: ^10.2.0
   flutter:
     sdk: flutter

@@ -11,6 +11,8 @@ import 'package:matrimonial_ai/widgets/app_text_passordform_field.dart';
 import 'package:matrimonial_ai/widgets/outline_button.dart';
 import 'package:matrimonial_ai/widgets/outline_loginbutton.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:timer_count_down/timer_count_down.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import '../../routes/app_pages.dart';
 import '../../widgets/primary_button.dart';
 
@@ -26,7 +28,8 @@ class SignUpVerifyPasswordView extends GetView<SignUpController> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: true,
           leading: IconButton(
@@ -36,79 +39,105 @@ class SignUpVerifyPasswordView extends GetView<SignUpController> {
           title: const Center(child: Text('Matrimonial.ai',style: TextStyle(color: Color(0xff7F4458),fontFamily: 'margarine' ,fontSize: 23,fontWeight: FontWeight.w500),)),),
         body: Container(
           margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 10),
-          child:  Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text('Enter OTP sent to +1-675****123',style: TextStyle(color: Colors.black,fontFamily: 'outfit' ,fontSize: 20,fontWeight: FontWeight.w600),),
-              ),
-              const SizedBox(height: 20,),
-              SizedBox(
-                height: 43,
-                child: OtpTextField(
-                  numberOfFields: 6,
-                  borderColor: const Color(0xFF512DA8),
-                  fieldWidth: 43,
-                  enabledBorderColor: Colors.grey.shade300,
-                  focusedBorderColor: Colors.grey.shade300,
+          child:  VisibilityDetector(
+              onVisibilityChanged: (visibilityInfo){
+                controller.isVisible.value = visibilityInfo.visibleFraction>0;
+              },
+            key: const Key("key"),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Obx(() => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Enter OTP sent to ${controller.mobileNumber.value}',style: TextStyle(color: Colors.black,fontFamily: 'outfit' ,fontSize: 20,fontWeight: FontWeight.w600),),
+                )),
+                Obx(() =>  Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Test OTP  ${controller.registerApiResponse.value.data?.otp}',style: TextStyle(color: Colors.black,fontFamily: 'outfit' ,fontSize: 20,fontWeight: FontWeight.w600),),
+                )),
+                const SizedBox(height: 20,),
+                SizedBox(
+                  child: OtpTextField(
+                    numberOfFields: 6,
+                    borderColor: const Color(0xFF512DA8),
+                    fieldWidth: MediaQuery.of(context).size.width/8,
 
-                  //set to true to show as box or false to show as dash
-                  showFieldAsBox: true,
-                  //runs when a code is typed in
-                  onCodeChanged: (String code) {
-                    //handle validation or checks here
-                  },
-                  //runs when every textfield is filled
-                  onSubmit: (String verificationCode){
-                    showDialog(
-                        context: context,
-                        builder: (context){
-                          return AlertDialog(
-                            title: const Text("Verification Code"),
-                            content: Text('Code entered is $verificationCode'),
-                          );
+                    styles: const [
+                      TextStyle(color: Color(0xFF667085),fontSize: 16,fontWeight: FontWeight.w400,fontFamily: 'outfit') ,
+                      TextStyle(color: Color(0xFF667085),fontSize: 16,fontWeight: FontWeight.w400,fontFamily: 'outfit') ,
+                      TextStyle(color: Color(0xFF667085),fontSize: 16,fontWeight: FontWeight.w400,fontFamily: 'outfit') ,
+                      TextStyle(color: Color(0xFF667085),fontSize: 16,fontWeight: FontWeight.w400,fontFamily: 'outfit') ,
+                      TextStyle(color: Color(0xFF667085),fontSize: 16,fontWeight: FontWeight.w400,fontFamily: 'outfit') ,
+                      TextStyle(color: Color(0xFF667085),fontSize: 16,fontWeight: FontWeight.w400,fontFamily: 'outfit') ,
+                    ],
+                    enabledBorderColor: Colors.grey.shade300,
+                    focusedBorderColor: Colors.grey.shade300,
+
+                    //set to true to show as box or false to show as dash
+                    showFieldAsBox: true,
+                    //runs when a code is typed in
+                    onCodeChanged: (String code) {
+                      //handle validation or checks here
+                      code="1111111";
+                    },
+                    //runs when every textfield is filled
+                    onSubmit: (String verificationCode){
+                      controller.registerVerifyOTP(controller.registerApiResponse.value.data?.otp);
+
+                    }, // end onSubmit
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(left: 8,right: 8,top: 10,bottom: 40),
+                    child: Countdown(
+                      seconds: 60,
+                      build: (BuildContext context, double time) => Text('Didn’t receive the OTP? Retry in ${time.toInt()}',style: const TextStyle(color: Color(0xff505050),fontFamily: 'outfit' ,fontSize: 12,fontWeight: FontWeight.w400),),
+                      interval: const Duration(milliseconds: 1000),
+                      onFinished: () {
+
+                        if(controller.isVisible.value){
+                          controller.signUp(controller.mobileNumber.value);
+
                         }
-                    );
-                  }, // end onSubmit
+
+                        print('Timer is done!');
+                      },
+                    )
                 ),
-              ),
 
-              const Padding(
-                  padding: EdgeInsets.only(left: 8,right: 8,top: 10,bottom: 40),
-                  child: Text('Didn’t receive the OTP? Retry in 00:11',style: TextStyle(color: Color(0xff505050),fontFamily: 'outfit' ,fontSize: 12,fontWeight: FontWeight.w400),)
-              ),
+                PrimaryButton(text: "Verify",onPressed: (){
 
-              PrimaryButton(text: "Verify",onPressed: (){
-                Get.toNamed(Routes.REGISTERCOMPLETE);
-              },),
-              const Center(
-                child: Padding(
-                    padding: EdgeInsets.only(top: 20,bottom: 20),
-                    child: Text('OR',style: TextStyle(color: Color(0xff505050),fontFamily: 'outfit' ,fontSize: 17,fontWeight: FontWeight.w500),)
+                  controller.registerVerifyOTP(controller.registerApiResponse.value.data?.otp);
+
+                },),
+                const Center(
+                  child: Padding(
+                      padding: EdgeInsets.only(top: 20,bottom: 20),
+                      child: Text('OR',style: TextStyle(color: Color(0xff505050),fontFamily: 'outfit' ,fontSize: 17,fontWeight: FontWeight.w500),)
+                  ),
                 ),
-              ),
-              OutlinedAppButton(text: 'Login via Password',onPressed: (){
-                Get.back();
-              },),
+                OutlinedAppButton(text: 'Login via Password',onPressed: (){
+                  Get.back();
+                },),
 
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 30),
-                child: Center(
-                  child: RichText(
-                      text:
-                      TextSpan(
-                          recognizer: TapGestureRecognizer()..onTap =(){},
-                          children: const [
-                            TextSpan(text: 'Don’t have an account? ',style: TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'outfit')),
-                            TextSpan(text: 'Register',style: TextStyle(color: Color(0xff106EDC),fontSize: 18,fontFamily: 'outfit'))
-                          ])),
-                ),
-              )
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: Center(
+                    child: RichText(
+                        text:
+                        TextSpan(
+                            recognizer: TapGestureRecognizer()..onTap =(){},
+                            children: const [
+                              TextSpan(text: 'Don’t have an account? ',style: TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'outfit')),
+                              TextSpan(text: 'Register',style: TextStyle(color: Color(0xff106EDC),fontSize: 18,fontFamily: 'outfit'))
+                            ])),
+                  ),
+                )
 
-            ],
+              ],
 
+            ),
           ),
         )
     );

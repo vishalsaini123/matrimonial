@@ -113,7 +113,8 @@ class AppTextField<T> extends StatelessWidget {
                   maxLength: maxLength,
                   autofocus: false,
                   enabled: enabled,
-                  style: const TextStyle(fontFamily: 'outfit',fontSize: 16,fontWeight: FontWeight.w400),
+
+                  style: const TextStyle(color:  Color(0xFF667085),fontFamily: 'outfit',fontSize: 16,fontWeight: FontWeight.w400),
                   decoration: InputDecoration(
                     filled: filled,
                     isDense: true,

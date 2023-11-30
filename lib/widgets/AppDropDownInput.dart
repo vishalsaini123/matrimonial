@@ -24,6 +24,7 @@ class AppDropdownInput<T> extends StatelessWidget {
             contentPadding:  const EdgeInsets.symmetric(
                 horizontal: 20.0, vertical: 15.0),
             labelText: value==null?hintText:'',
+            labelStyle: const TextStyle(color: Color(0xFF667085),fontSize: 16,fontWeight: FontWeight.w400,fontFamily: 'inter'),
 
             enabledBorder:const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black12, width: 1.5),
@@ -45,6 +46,7 @@ class AppDropdownInput<T> extends StatelessWidget {
               value: value,
               isDense: true,
               onChanged: onChanged,
+              style: const TextStyle(fontSize: 16,color: Color(0xFF344054),fontFamily: 'inter',fontWeight: FontWeight.w500,),
               items: options.map((T value) {
                 return DropdownMenuItem<T>(
                   value: value,

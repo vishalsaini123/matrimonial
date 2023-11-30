@@ -43,10 +43,24 @@ class DialogUtils {
           ]);
         });
   }
+ static void showImageDialog(BuildContext context, String titleText, Function? cameraFun, Function? galleryFun) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+              actionsAlignment: MainAxisAlignment.start,
+              actions: <Widget>[
+
+            _buildButton("Select image from camera", context, () => cameraFun?.call()),
+            _buildButton("Select image from gallery", context, () => galleryFun?.call())
+          ]);
+        });
+  }
 
   static Widget _buildButton(String title, BuildContext context, Function? callback) {
     return TextButton(
-        child: Text(title),
+
+        child: Text(title,textAlign: TextAlign.center,),
         onPressed: () {
           callback?.call();
           Navigator.pop(context);

@@ -10,6 +10,7 @@ class AppTextFormField extends StatelessWidget {
     this.hintText,
     this.labelText,
     this.obscureText,
+    this.onChanged,
     this.keyboardType = TextInputType.text,
     this.textAlign,
     this.fillColor,
@@ -65,6 +66,7 @@ class AppTextFormField extends StatelessWidget {
   final Color? fillColor;
   final String? Function(String? value)? validator;
   final void Function(String? value)? onSaved;
+  final void Function(String value)? onChanged;
   final void Function()? onTap;
   final ImageIcon? prefixIcon;
 
@@ -82,6 +84,7 @@ class AppTextFormField extends StatelessWidget {
         maxLines: maxLines ?? minLines,
         maxLength: maxLength,
         autofocus: false,
+        onChanged: onChanged,
         style:TextStyle(color: const Color(0xFF667085),fontSize: 16,fontWeight: FontWeight.w400,fontFamily: font) ,
         enabled: enabled,
         decoration: InputDecoration(
