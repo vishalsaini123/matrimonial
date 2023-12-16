@@ -99,7 +99,9 @@ class HomeController extends GetxController {
         dio.Response? response =
         await _httpService.getRequest("getHomeListing");
         print(response!.data!.toString());
-        Get.back();
+        Future.delayed(const Duration(seconds: 1),(){
+          Get.back();
+        });
         if (null != response) {
 
           print(response.data);

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
@@ -156,13 +157,84 @@ class SignUpController extends GetxController {
         if (null != response) {
 
           print(response.data);
-          Get.back();
-          isDataLoading(false);
-          if (response.statusCode == 200) {
 
-            mobileNumber(mobile);
-            registerApiResponse.value = RegisterApiResponse.fromJson(response.data);
-            Get.toNamed(Routes.signupVerify,arguments: registerApiResponse.value.data?.otp);
+          isDataLoading(false);
+          Get.back();
+          if (response.statusCode == 200) {
+            if(response.data['status'] != 200) {
+
+              SnackBarUtils.showMsg(response.data['message']);
+
+            } else {
+              mobileNumber(mobile);
+              registerApiResponse.value = RegisterApiResponse.fromJson(response.data);
+              SnackBarUtils.showMsg(registerApiResponse.value.message!);
+              Get.toNamed(Routes.signupVerify,arguments: registerApiResponse.value.data?.otp);
+
+            }
+
+
+
+
+
+          }
+        }
+      }
+      catch(ex){
+
+        isDataLoading(false);
+        hasSearchData(true);
+        Get.back();
+        print(ex.toString());
+
+      }
+
+    }
+
+
+
+
+
+  }
+  void retryUp(String mobile) async {
+
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    if(mobile.isEmpty){
+      SnackBarUtils.showMsg("Please enter email address or mobile number");
+      return;
+    }
+
+    else{
+
+      try{
+        isDataLoading(true);
+        hasSearchData(true);
+        showLoaderDialog(Get.context!);
+        dio.Response? response =
+        await _httpService.postRequest("sendOtpRegister",data: {
+          "mobile" : mobile,
+          "user_type" : "user"
+        }
+        );
+        if (null != response) {
+
+          print(response.data);
+
+          isDataLoading(false);
+
+          if (response.statusCode == 200) {
+            if(response.data['status'] != 200) {
+
+              SnackBarUtils.showMsg(response.data['message']);
+
+            } else {
+              mobileNumber(mobile);
+              registerApiResponse.value = RegisterApiResponse.fromJson(response.data);
+              SnackBarUtils.showMsg(registerApiResponse.value.message!);
+
+            }
+
 
 
 
@@ -251,7 +323,7 @@ class SignUpController extends GetxController {
 
     try {
       isDataLoading(true);
-      QBUser? user = await QB.users.createUser(email, password, fullName: fullName,tagList:fullName );
+      QBUser? user = await QB.users.createUser(email, password, fullName: fullName );
       debugPrint(user!.login);
       signInQbUser(email, password);
 
@@ -283,6 +355,7 @@ class SignUpController extends GetxController {
     try {
       await QB.chat.connect(userId, password);
       isDataLoading(false);
+      Get.back();
       Get.toNamed(Routes.profileComplete);
 
     } on PlatformException catch (e) {
@@ -298,7 +371,7 @@ class SignUpController extends GetxController {
         hasSearchData(true);
         dio.Response? response =
         await _httpService.postRequest("registerPreferences",data: {
-          "mobile" : "7054243647",
+          "mobile" : mobileNumber.value,
           "gender" : gender,
           "religous_believe" : religion,
           "occupation" : occupation,
@@ -388,7 +461,7 @@ class SignUpController extends GetxController {
           "gender" : gender,
           "age" : age,
           "native_place" : nativePlace,
-          "profile" : multipartImageList,
+          "profile[]" : multipartImageList,
           "education" : selectedHighEdu!.value,
           "college_name" : collegeName,
           "work_place" : workPlace,
@@ -419,7 +492,7 @@ class SignUpController extends GetxController {
 
               }
             SnackBarUtils.showMsg(model.message);
-            Get.back();
+
 
           }
         }
@@ -473,6 +546,12 @@ class SignUpController extends GetxController {
 
   }
 
+  bool validateStructure(String value){
+    String  pattern = r'^(?=(?:.*[a-zA-Z]){2})(?=(?:.*[0-9]){6})[a-zA-Z0-9]*$';
+    RegExp regExp =  RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
+
   void calculateAge(DateTime today, DateTime dob) {
     final year = today.year - dob.year;
     final mth = today.month - dob.month;
@@ -484,6 +563,7 @@ class SignUpController extends GetxController {
       age("${year-1}");
     }
     else {
+      age("${year-1}");
       print('your next bday is ${12-mth}months and ${28 -days} days away');
     }
   }

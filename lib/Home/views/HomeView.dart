@@ -10,6 +10,7 @@ import 'package:matrimonial_ai/data/colors.dart';
 import 'package:matrimonial_ai/widgets/app_text_form_field.dart';
 import 'package:matrimonial_ai/widgets/outline_button.dart';
 import 'package:swipe_cards/swipe_cards.dart';
+import '../../data/cons.dart';
 import '../../routes/app_pages.dart';
 import '../../widgets/primary_button.dart';
 
@@ -193,11 +194,11 @@ class HomeView extends GetView<HomeController> {
                           margin: const EdgeInsets.only(left: 40,right: 40,top: 40),
 
                           height: MediaQuery.of(context).size.height/1.8,
-                          decoration:  const BoxDecoration(
+                          decoration:   BoxDecoration(
                               image: DecorationImage(
                                   fit: BoxFit.fill,
-                                  image: AssetImage("assets/images/home_dummy.png",)),
-                              borderRadius: BorderRadius.all(Radius.circular(25))),
+                                  image:controller.homeListing.value.data![index].image.isEmpty? const AssetImage("assets/images/home_dummy.png",) as ImageProvider: NetworkImage(Cons.imageBaseUrl+controller.homeListing.value.data![index].image[0])),
+                              borderRadius: const BorderRadius.all(Radius.circular(25))),
                           alignment: Alignment.center,
                           child:  Row(
                             crossAxisAlignment: CrossAxisAlignment.end,

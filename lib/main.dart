@@ -10,10 +10,11 @@ import 'data/theme.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
-  String appId = "101860";
-  String authKey = "DEeMLg6ALefOvMB";
-  String authSecret = "5mARrNc4qycXGFC";
-  String accountKey = "UuRWwaWLtc6XJ--pz47W";
+  String appId = "102214";
+  String authKey = "ak_FGJdg6T7QEsWC3P";
+  String authSecret = "as_5CxQgx2sgRPuDPT";
+  String accountKey = "ack_egBTsHfS8huyJhGEVKJE";
+
 
 
   try {

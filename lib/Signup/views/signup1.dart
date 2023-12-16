@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -113,13 +114,23 @@ class SignUp1 extends GetView<SignUpController> {
                         const Spacer(),
                         FloatingActionButton(
                           onPressed: () {
+
                             FocusManager.instance.primaryFocus?.unfocus();
+
+
 
                             if(controller.profilepageprogress.value==0){
                               if (firstNameController.text.isEmpty ||
                                   lastNameController.text.isEmpty ||
                                   passwordController.text.isEmpty ) {
                                 SnackBarUtils.showMsg("Please enter all fields");
+                                return;
+                              }
+                              else if(passwordController.text.length<8){
+                                SnackBarUtils.showMsg("Password length should be 8 digits");
+                                return;
+                              } else if(!controller.validateStructure(passwordController.text)){
+                                SnackBarUtils.showMsg("Password should contain at least two characters and 6 numbers");
                                 return;
                               }
                               else{
@@ -408,6 +419,7 @@ class SignUp1 extends GetView<SignUpController> {
                     controller: yearController,
                     showLabel: false,
                     font: 'inter',
+                    keyboardType: TextInputType.number,
                     filled: false,
                     onChanged: (value) => controller.calculateAge(
                         DateTime.now(),
@@ -821,7 +833,7 @@ class SignUp1 extends GetView<SignUpController> {
                 // state.didChange(newValue);
               },
               getLabel: (String value) => value,
-              hintText: 'Select Team Member',
+              hintText: 'Select monthly income',
               options: const ['100', '200'],
             )),
       ],

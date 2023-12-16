@@ -96,7 +96,7 @@ class SignUpVerifyPasswordView extends GetView<SignUpController> {
                       onFinished: () {
 
                         if(controller.isVisible.value){
-                          controller.signUp(controller.mobileNumber.value);
+                          controller.retryUp(controller.mobileNumber.value);
 
                         }
 
